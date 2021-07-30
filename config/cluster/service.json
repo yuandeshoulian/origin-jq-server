@@ -1,0 +1,20 @@
+{
+  "Service":{
+  },
+  "NodeService":[
+   {
+      "NodeId":2,
+	  "TcpService":{
+		"ListenAddr":"0.0.0.0:9930",
+		"MaxConnNum":5000,
+		"PendingWriteNum":10000,
+		"LittleEndian":false,
+		"MinMsgLen":4,
+		"MaxMsgLen":65535,
+		"ReadDeadline": 30,
+		"WriteDeadline": 30
+	  }
+   }
+  ]
+ 
+}
