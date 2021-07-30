@@ -15,7 +15,9 @@ type GameService struct {
 }
 
 func (slf *GameService) OnInit() error {
-	slf.RegRawRpc(1, &LogicHandler{})
+	slf.RegRawRpc(1, &LogicHandler{
+		service: slf,
+	})
 
 	//监听其他Node结点连接和断开事件
 	slf.RegRpcListener(slf)

@@ -56,7 +56,7 @@ func A() {
 
 func main() {
 
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 5000; i++ {
 		//fmt.Println("========")
 		go A()
 	}

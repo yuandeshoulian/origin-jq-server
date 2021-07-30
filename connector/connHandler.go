@@ -3,6 +3,7 @@ package connector
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"github.com/duanhf2012/origin/rpc"
 	"github.com/gogo/protobuf/jsonpb"
@@ -38,7 +39,6 @@ func (slf *ConnService) OnRequest(clientid uint64, msg proto.Message, handlerId 
 		},
 	})
 	fmt.Printf("AsyncCall output %d\n", output)
-
 }
 
 type RawInputArgs struct {
@@ -72,4 +72,20 @@ func (slf *ConnService) OnRequest2(clientid uint64, msg proto.Message, handlerId
 	copy(tempData[12:], data)
 	inputArgs.rawData = tempData
 	_ = slf.RawGoNode(rpc.RpcProcessorGoGoPB, 3, 1, "GameService", inputArgs)
+}
+
+type InData struct {
+	Clientid  uint64
+	HandlerId uint32
+	Data      []byte
+}
+
+func (slf *ConnService) RPC_Notify(indata *InData, output *int) error {
+	pbMsg := &msgpb.Req{}
+	_ = json.Unmarshal(indata.Data, pbMsg)
+	_ = slf.tcpService.SendMsg(indata.Clientid, &processor.PBPackInfo{
+		Id:  indata.HandlerId,
+		Msg: pbMsg,
+	})
+	return nil
 }
